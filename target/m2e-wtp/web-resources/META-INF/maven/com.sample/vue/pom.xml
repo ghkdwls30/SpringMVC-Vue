@@ -153,6 +153,13 @@
 		    <scope>provided</scope>
 		</dependency>
 		
+		<!-- PageHelper  -->
+		<dependency>
+		    <groupId>com.github.pagehelper</groupId>
+		    <artifactId>pagehelper</artifactId>
+		    <version>4.1.4</version>
+		</dependency>
+		
 		<!-- LogBack -->
 		<dependency>
 		    <groupId>ch.qos.logback</groupId>

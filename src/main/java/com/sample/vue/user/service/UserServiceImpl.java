@@ -1,17 +1,24 @@
 package com.sample.vue.user.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sample.vue.user.model.UserEntity;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sample.vue.common.model.Page;
+import com.sample.vue.common.model.PageCriteria;
 import com.sample.vue.user.model.UserDetailTuple;
 import com.sample.vue.user.repository.UserMapper;
 import com.sample.vue.user.repository.UserRepository;
 
+import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -75,11 +82,47 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * 복합쿼리 : 조회예제 1
+	 * 복합쿼리 : 단일 튜플 조회 예제 
 	 */
 	@Override
 	public UserDetailTuple selectDetailUser(Map<String, Object> param) {
 		return userMapper.selectDetailUser( param);
+	}
+	
+	/**
+	 * 복합쿼리 : 엔티티 리스트 조회 예제 
+	 */
+	@Override
+	public List<UserEntity> selectUserList(Map<String, Object> param) throws Exception {
+		return userMapper.selectUserList( param);
+	}
+
+	/**
+	 * 복합쿼리 : 엔티티 리스트 페이징 조회 예제 
+	 */
+	@Override
+	public PageInfo<UserEntity> selectUserListPage(Map<String, Object> param, PageCriteria pageCriteria) {
+		PageHelper.startPage(pageCriteria.getPage(), pageCriteria.getSize());
+		List<UserEntity> list = userMapper.selectUserList( param);		
+		return new PageInfo<UserEntity>(list);
+	}
+
+	/**
+	 * 복합쿼리 : 튜플 리스트 페이징 조회 예제 
+	 */
+	@Override
+	public PageInfo<UserDetailTuple> selectUserDetailListPage(Map<String, Object> param, PageCriteria pageCriteria) {
+		PageHelper.startPage(pageCriteria.getPage(), pageCriteria.getSize());
+		List<UserDetailTuple> list = userMapper.selectUserDetailList( param);		
+		return new PageInfo<UserDetailTuple>(list);
+	}
+
+	/**
+	 * 복합쿼리 : 튶플 리스트 조회 예제 
+	 */
+	@Override
+	public List<UserDetailTuple> selectUserDetailList(Map<String, Object> param) {
+		return userMapper.selectUserDetailList(param);
 	}
 
 }

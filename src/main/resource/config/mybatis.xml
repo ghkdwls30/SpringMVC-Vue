@@ -17,6 +17,7 @@
         <!-- <setting name="callSettersOnNulls" value="true" /> -->
     </settings>
     
+     
     <typeAliases>
     	<!-- Entity  -->
         <typeAlias alias="UserEntity" type="com.sample.vue.user.model.UserEntity"/>
@@ -26,12 +27,12 @@
         <typeAlias alias="UserDetailTuple" type="com.sample.vue.user.model.UserDetailTuple"/>
     </typeAliases>
  
-    <!-- MyBatis mapper 파일이 추가될 때마다 지정해줘야 . -->
-<!--     <mappers> -->
-<!--         <mapper resource="com/edu/mapper/bbs/bbs.xml"/> -->
-<!--         <mapper resource="com/edu/mapper/comment/comment.xml"/> -->
-<!--     </mappers> -->
-    
+	<plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="dialect" value="mysql"/>
+        </plugin>
+    </plugins>
+	
 </configuration>
 
 

@@ -20,7 +20,6 @@
 	     LIMIT 1 
 	</select>
 	
-	
 	<select id="selectDetailUser" resultMap="userDetailTuple">
 		SELECT 
 			<bind name="alias" value="'U.'"/><include refid="com.sample.vue.user.model.UserEntity.aliasColumn" />
@@ -30,5 +29,20 @@
 		  WHERE 1 = 1 
 		    AND U.ID = #{id}
 	</select>
+	
+	<select id="selectUserList" resultMap="com.sample.vue.user.model.UserEntity.resultMap">
+		SELECT 
+			<bind name="alias" value="'U.'"/><include refid="com.sample.vue.user.model.UserEntity.aliasColumn" />
+		 FROM TB_USER U
+	</select>
+	
+	<select id="selectUserDetailList" resultMap="userDetailTuple">
+		SELECT 
+			<bind name="alias" value="'U.'"/><include refid="com.sample.vue.user.model.UserEntity.aliasColumn" />
+			,<bind name="alias" value="'G.'"/><include refid="com.sample.vue.group.model.GroupEntity.aliasColumn" />
+		  FROM TB_USER U
+		  INNER JOIN TB_GROUP G ON U.GROUP_ID = G.ID 		  
+	</select>
+	
 	
 </mapper>
