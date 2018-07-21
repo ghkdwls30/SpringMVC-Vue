@@ -2,4 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sample.vue.user.model.UserEntity">
 
+	<resultMap type="UserEntity" id="resultMap">
+		<id property="id" column="UserEntity_id"/>
+		<result property="groupId" column="UserEntity_groupId" />
+		<result property="name" column="UserEntity_name" />
+		<result property="age" column="UserEntity_age" />
+		<result property="password" column="UserEntity_password" />
+		<result property="regDt" column="UserEntity_regDt" />
+	</resultMap>
+
+	<sql id="column">
+		<bind name="alias" value="''"/><include refid="com.sample.vue.user.model.UserEntity.aliasColumn" />	
+	</sql>
+	
+	<sql id="aliasColumn">
+		 ${alias}ID AS UserEntity_id
+		,${alias}ID AS UserEntity_groupId
+		,${alias}NAME AS UserEntity_name
+		,${alias}AGE AS UserEntity_age
+		,${alias}PASSWORD AS UserEntity_password
+		,${alias}REG_DT AS UserEntity_regDt 
+	</sql>
+	
 </mapper>

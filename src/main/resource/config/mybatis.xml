@@ -18,7 +18,12 @@
     </settings>
     
     <typeAliases>
+    	<!-- Entity  -->
         <typeAlias alias="UserEntity" type="com.sample.vue.user.model.UserEntity"/>
+        <typeAlias alias="GroupEntity" type="com.sample.vue.group.model.GroupEntity"/>
+        
+        <!-- Tuple  -->
+        <typeAlias alias="UserDetailTuple" type="com.sample.vue.user.model.UserDetailTuple"/>
     </typeAliases>
  
     <!-- MyBatis mapper 파일이 추가될 때마다 지정해줘야 . -->

@@ -2,32 +2,67 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-						http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
-	
+						http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+						http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+	<tx:annotation-driven/>
+
+	<!-- 데이터베이스 설정  -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/stome?serverTimezone=UTC"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/stome?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf8"/>
         <property name="username" value="root"/>
         <property name="password" value="1234"/>
     </bean>
     
+    <!-- 마이바티스 세션 설정  -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
         <property name="configLocation" value="classpath:/config/mybatis.xml"></property>
-        
-        <!-- 런타임 시 SqlSessionFactory에 MyBatis mapper 파일들의 경로가 설정된다. -->
-        <property name="mapperLocations" value="classpath:/mapper/**/*.xml" />
+        <!-- 매퍼, 레파지토리 파일 설정  -->
+        <property name="mapperLocations">
+			<array>
+				<value>classpath:/mapper/**/*.xml</value>
+				<value>classpath:/repository/**/*.xml</value>
+			</array>
+		</property>
     </bean>
     
     <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg ref="sqlSessionFactory"></constructor-arg>
     </bean>
     
-    <!-- 맵퍼파일 검색  -->
+    <!-- 매퍼, 레파지토리 클래스 등록  -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 	 	<property name="basePackage" value="com.sample.vue.**.repository" />
 	</bean>
+	
+	<!-- 트랜젝션  -->
+<!-- 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
+<!-- 	    <property name="dataSource" ref="dataSource"/> -->
+<!-- 	</bean> -->
+	
+<!-- 	<aop:config proxy-target-class="true"> -->
+<!-- 	    <aop:pointcut id="serviceOperation" expression="execution(public * com.sample..service.*ServiceImpl.*(..))" /> -->
+<!-- 	    <aop:advisor id="transactionAdvisor" pointcut-ref="serviceOperation" advice-ref="txAdvice"/> -->
+<!-- 	</aop:config> -->
+	
+<!-- 	<tx:advice id="txAdvice" transaction-manager="transactionManager"> -->
+<!-- 	    <tx:attributes> -->
+<!-- 	    	<tx:method name="insert*" rollback-for="Exception"/> -->
+<!-- 	        <tx:method name="save*"	  rollback-for="Exception"/> -->
+<!-- 	        <tx:method name="update*" rollback-for="Exception"/> -->
+<!-- 	        <tx:method name="delete*" rollback-for="Exception"/> -->
+<!-- 	    </tx:attributes> -->
+<!-- 	</tx:advice> -->
+	
+<!-- 	<tx:annotation-driven transaction-manager="transactionManager" /> -->
+
  
 </beans>
