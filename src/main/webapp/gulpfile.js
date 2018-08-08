@@ -14,7 +14,8 @@ gulp.task('webpack', function () {
     .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('watch', function(){    
+gulp.task('watch', function(){
+	gulp.watch('./js/common/**/*.js', ['webpack']);
     gulp.watch('./js/page/**/*.js', ['webpack']);
     gulp.watch('./js/view/**/*.vue', ['webpack']);
 })

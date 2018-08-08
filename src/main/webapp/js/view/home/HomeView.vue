@@ -20,14 +20,15 @@
 </template>
 
 <script>
+import commonUtil from '../../common/commonUtil.js'
 export default {
   name: 'app',
   props : ['data'],
   beforeCreate(){
     //console.log(this.data.msg);
   },
-  created(){
-    console.log(this.data.msg);
+  created(){    
+    //commonUtil.message();
   }
 }
 </script>

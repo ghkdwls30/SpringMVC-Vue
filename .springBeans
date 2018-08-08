@@ -8,9 +8,10 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/context-servlet.xml</config>
+		<config>src/main/resource/spring/context-common.xml</config>
 	</configs>
 	<autoconfigs>
-		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
+		<config>src/main/resource/spring/context-datasource.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

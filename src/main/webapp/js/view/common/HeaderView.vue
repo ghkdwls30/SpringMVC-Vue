@@ -12,7 +12,7 @@ export default {
     //console.log(this.data.msg);
   },
   created(){
-    console.log(this.data.msg);
+    
   }
 }
 </script>

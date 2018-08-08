@@ -11,12 +11,10 @@
 						http://www.springframework.org/schema/tx
 						http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<tx:annotation-driven/>
-
 	<!-- 데이터베이스 설정  -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/stome?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf8"/>
         <property name="username" value="root"/>
         <property name="password" value="1234"/>
     </bean>
@@ -25,6 +23,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
         <property name="configLocation" value="classpath:/config/mybatis.xml"></property>
+		
         <!-- 매퍼, 레파지토리 파일 설정  -->
         <property name="mapperLocations">
 			<array>
@@ -44,25 +43,24 @@
 	</bean>
 	
 	<!-- 트랜젝션  -->
-<!-- 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
-<!-- 	    <property name="dataSource" ref="dataSource"/> -->
-<!-- 	</bean> -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="dataSource"/>
+	</bean>
 	
-<!-- 	<aop:config proxy-target-class="true"> -->
-<!-- 	    <aop:pointcut id="serviceOperation" expression="execution(public * com.sample..service.*ServiceImpl.*(..))" /> -->
-<!-- 	    <aop:advisor id="transactionAdvisor" pointcut-ref="serviceOperation" advice-ref="txAdvice"/> -->
-<!-- 	</aop:config> -->
+	<!-- AOP 방식  -->
+	<aop:config proxy-target-class="true">
+	    <aop:pointcut id="serviceOperation" expression="execution(public * com.sample..service.*ServiceImpl.*(..))" />
+	    <aop:advisor id="transactionAdvisor" pointcut-ref="serviceOperation" advice-ref="txAdvice"/>
+	</aop:config>
 	
-<!-- 	<tx:advice id="txAdvice" transaction-manager="transactionManager"> -->
-<!-- 	    <tx:attributes> -->
-<!-- 	    	<tx:method name="insert*" rollback-for="Exception"/> -->
-<!-- 	        <tx:method name="save*"	  rollback-for="Exception"/> -->
-<!-- 	        <tx:method name="update*" rollback-for="Exception"/> -->
-<!-- 	        <tx:method name="delete*" rollback-for="Exception"/> -->
-<!-- 	    </tx:attributes> -->
-<!-- 	</tx:advice> -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	    <tx:attributes>
+	    	<tx:method name="insert*" rollback-for="Exception"/>
+	        <tx:method name="save*"	  rollback-for="Exception"/>
+	        <tx:method name="update*" rollback-for="Exception"/>
+	        <tx:method name="delete*" rollback-for="Exception"/>
+	    </tx:attributes>
+	</tx:advice>
 	
-<!-- 	<tx:annotation-driven transaction-manager="transactionManager" /> -->
-
  
 </beans>

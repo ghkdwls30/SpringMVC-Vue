@@ -14,5 +14,6 @@ function initalize(initData){
   // 모듈 뷰 생성
   ViewHepler.createView("#content", HomeView, initData);
 }
-export { initalize };
+
+export { initalize }
 

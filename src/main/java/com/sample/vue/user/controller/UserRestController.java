@@ -53,7 +53,7 @@ public class UserRestController extends BaseRestController {
 			// 전체 리스트
 			entitys = userService.selectUserDetailList(param);
 		}
-		
+		 	
 		return entitys;
 	}
 	

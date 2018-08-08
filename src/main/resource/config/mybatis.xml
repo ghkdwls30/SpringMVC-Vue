@@ -17,7 +17,6 @@
         <!-- <setting name="callSettersOnNulls" value="true" /> -->
     </settings>
     
-     
     <typeAliases>
     	<!-- Entity  -->
         <typeAlias alias="UserEntity" type="com.sample.vue.user.model.UserEntity"/>

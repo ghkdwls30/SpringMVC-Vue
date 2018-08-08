@@ -4,21 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sample.vue.user.model.UserEntity;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sample.vue.common.model.Page;
 import com.sample.vue.common.model.PageCriteria;
 import com.sample.vue.user.model.UserDetailTuple;
+import com.sample.vue.user.model.UserEntity;
 import com.sample.vue.user.repository.UserMapper;
 import com.sample.vue.user.repository.UserRepository;
 
-import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -122,6 +119,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public List<UserDetailTuple> selectUserDetailList(Map<String, Object> param) {
+	
 		return userMapper.selectUserDetailList(param);
 	}
 

@@ -9,7 +9,7 @@ module.exports = {
     publicPath: '/dist/',
     filename: '[name].bundle.js',
     libraryTarget: 'var',
-    library: 'pageEntry'
+    library: '[name]'
   },
   module: {
     rules: [

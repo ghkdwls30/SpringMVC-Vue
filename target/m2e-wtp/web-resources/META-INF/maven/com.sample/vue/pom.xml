@@ -173,13 +173,15 @@
 			<artifactId>tiles-extras</artifactId>
 			<version>${org.apache.tiles-version}</version>
 		</dependency>
+
+
 		
 		<!-- MyBatis  -->
-		 <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.5</version>
-        </dependency>
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>8.0.11</version>
+		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
@@ -197,16 +199,16 @@
         </dependency>
         
         <!-- AOP  -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.aspectj</groupId> -->
-<!-- 			<artifactId>aspectjweaver</artifactId> -->
-<!-- 			<version>1.8.4</version> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>cglib</groupId> -->
-<!-- 			<artifactId>cglib-nodep</artifactId> -->
-<!-- 			<version>3.1</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.8.4</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>3.1</version>
+		</dependency>
 		
 		<!-- ETC -->
 		<dependency>

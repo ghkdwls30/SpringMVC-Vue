@@ -5,6 +5,7 @@
 	<insert id="insert" useGeneratedKeys="true" keyProperty="entity.id" parameterType="UserEntity">
 		INSERT INTO TB_USER VALUES( 
 			 #{entity.id}
+			,#{entity.groupId}
 			,#{entity.name}
 			,#{entity.age}
 			,#{entity.password}
@@ -16,6 +17,7 @@
 		UPDATE TB_USER
 		<set>
 			<if test="entity.id != null">ID = #{entity.id},</if>
+			<if test="entity.groupId != null">ID = #{entity.groupId},</if>
 			<if test="entity.name != null">NAME = #{entity.name},</if>
 			<if test="entity.age != null">AGE = #{entity.age},</if>
 			<if test="entity.password != null"> PASSWORD = #{entity.password},</if>

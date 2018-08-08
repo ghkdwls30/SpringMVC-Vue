@@ -43,6 +43,4 @@
 		  FROM TB_USER U
 		  INNER JOIN TB_GROUP G ON U.GROUP_ID = G.ID 		  
 	</select>
-	
-	
 </mapper>
