@@ -49,24 +49,53 @@ public class DBCrawler {
 			boolean existXMLMapper = checkFileExist(absoluteResourcePath + mapper + "/" + s + "/tb" + s + "Mapper.xml");
 			boolean existXMLRepository = checkFileExist(absoluteResourcePath + repository + "/" + s + "/tb" + s  + "Repository.xml");
 			
-
-			System.out.println(existJavaEntity + " : " + s);
-			System.out.println(existJavaMapper + " : " + s);
-			System.out.println(existJavaRepository + " : " + s);
-			
-			System.out.println(existXMLEntity + " : " + s);
-			System.out.println(existXMLMapper + " : " + s);
-			System.out.println(existXMLRepository + " : " + s);
-			
-			
 			List<HashMap<String, String>> info = getTableDetailInfo("tb_"+s);
-			createJavaEntityFile(s, info);
-			
+//			createJavaEntityFile(s, info);
+//			createJavaMapperFile(s, info);
+//			createJavaRepositoryFile(s, info);
+			createXMLEntityFile(s, info);
 		}
 	}
 	
 	public void createJavaEntityFile(String obj, List<HashMap<String, String>> info) {
 		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/JavaEntity.vm"); 
+		VelocityContext velocityContext = new VelocityContext(); 
+		velocityContext.put("obj", obj); 
+		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
+		velocityContext.put("info", info); 
+		
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+
+		System.out.println(stringWriter.toString());
+	}
+	
+	public void createJavaMapperFile(String obj, List<HashMap<String, String>> info) {
+		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/JavaMapper.vm"); 
+		VelocityContext velocityContext = new VelocityContext(); 
+		velocityContext.put("obj", obj); 
+		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
+		
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+
+		System.out.println(stringWriter.toString());
+	}
+	
+	public void createJavaRepositoryFile(String obj, List<HashMap<String, String>> info) {
+		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/JavaRepository.vm"); 
+		VelocityContext velocityContext = new VelocityContext(); 
+		velocityContext.put("obj", obj); 
+		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
+		
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+
+		System.out.println(stringWriter.toString());
+	}
+	
+	public void createXMLEntityFile(String obj, List<HashMap<String, String>> info) {
+		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/XMLEntity.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
 		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
@@ -86,7 +115,7 @@ public class DBCrawler {
 	public void initJDBC() {
 		try {
 		    Class.forName("com.mysql.jdbc.Driver");	
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test", "root", "1234");
+            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test?serverTimezone=UTC", "root", "1234");
 		}
 		catch (Exception ex) {
             ex.printStackTrace();

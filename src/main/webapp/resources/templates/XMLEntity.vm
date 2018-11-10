@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sample.vue.${obj}.model.${objCapital}Entity">
+
+	<resultMap type="${objCapital}Entity" id="resultMap">
+#foreach($source in $info)
+#if($source.pri == 'PRI')
+		<id property="$source.col" column="${objCapital}Entity_$source.col"/>
+#else	
+		<result property="$source.col" column="${objCapital}Entity_$source.col" />
+#end
+#end	
+	</resultMap>
+
+	<sql id="column">
+		<bind name="alias" value="''"/><include refid="com.sample.vue.${obj}.model.${objCapital}Entity.aliasColumn" />	
+	</sql>
+	
+	<sql id="aliasColumn">
+#foreach($source in $info)
+		#[[${alias}]]# $source.col AS ${objCapital}Entity_$source.col
+#end		
+	</sql>
+	
+</mapper>

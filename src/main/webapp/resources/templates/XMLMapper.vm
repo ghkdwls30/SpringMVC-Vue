@@ -1,0 +1,6 @@
+package com.sample.vue.${obj}.repository;
+
+@Mapper
+public interface ${objCapital}Mapper {
+
+}

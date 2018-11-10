@@ -1,0 +1,8 @@
+package com.sample.vue.${obj}.repository;
+
+import com.sample.vue.common.repository.BaseRepository;
+import com.sample.vue.${obj}.model.${objCapital}Entity;
+
+public interface ${objCapital}Repository extends BaseRepository<${objCapital}Entity> {
+
+}

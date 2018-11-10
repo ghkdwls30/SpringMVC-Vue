@@ -1,0 +1,11 @@
+package com.sample.vue.${obj}.model;
+
+import java.sql.Timestamp;
+import lombok.Data;
+
+@Data
+public class ${objCapital}Entity {
+#foreach($source in $info)
+	private $source.type $source.col;
+#end	
+}
