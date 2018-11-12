@@ -1,8 +1,47 @@
-package com.sample.vue.${obj}.repository;
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sample.vue.${obj}.repository.${objCapital}Repository">
 
-import com.sample.vue.common.repository.BaseRepository;
-import com.sample.vue.${obj}.model.${objCapital}Entity;
+	<insert id="insert" useGeneratedKeys="true" keyProperty="entity.id" parameterType="${objCapital}Entity">
+		INSERT INTO TB_${obj} VALUES( 
+#foreach($source in $info)
+#if($velocityCount == '1')
+			 #{entity.$source.col}
+#else 
+   			 ,#{entity.$source.col}	
+#end
+#end				 
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE TB_${objCapital}
+		<set>
+#foreach($source in $info)
+			<if test="entity.$source.col != null">$source.col = #{entity.$source.col},</if>
+#end	
+		</set>
+ 		WHERE 1 = 1
+ 		<include refid="pkCond"></include>
+	</update>
 
-public interface ${objCapital}Repository extends BaseRepository<${objCapital}Entity> {
-
-}
+	<delete id="delete">	
+		DELETE 
+		  FROM TB_${objCapital}
+		 WHERE 1 = 1
+		<include refid="pkCond"></include>    
+	</delete>
+	
+	<select id="selectOne" resultMap="com.sample.vue.${obj}.model.${objCapital}Entity.resultMap">	
+		SELECT
+		    <include refid="com.sample.vue.${obj}.model.${objCapital}Entity.column" />
+		  FROM TB_${obj}
+		 WHERE 1 = 1
+		<include refid="pkCond"></include>    
+	</select>
+	
+	<sql id="pkCond">
+		AND ID = #{entity.id}
+	</sql>
+	
+</mapper>

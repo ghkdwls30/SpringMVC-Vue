@@ -1,6 +1,8 @@
 package com.sample.vue.common.framework;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -49,15 +51,35 @@ public class DBCrawler {
 			boolean existXMLMapper = checkFileExist(absoluteResourcePath + mapper + "/" + s + "/tb" + s + "Mapper.xml");
 			boolean existXMLRepository = checkFileExist(absoluteResourcePath + repository + "/" + s + "/tb" + s  + "Repository.xml");
 			
-			List<HashMap<String, String>> info = getTableDetailInfo("tb_"+s);
-//			createJavaEntityFile(s, info);
-//			createJavaMapperFile(s, info);
-//			createJavaRepositoryFile(s, info);
-			createXMLEntityFile(s, info);
+			List<HashMap<String, String>> info = getTableDetailInfo("tb_" + s);
+			
+			createFile(absoluteJavaPath + packagePath + "/" + s + model + "/" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Entity.java", createJavaEntityFile(s, info), true);
+			createFile(absoluteJavaPath + packagePath + "/" + s + repository + "/" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Mapper.java", createJavaMapperFile(s, info), false);
+			createFile(absoluteJavaPath + packagePath + "/" + s + repository + "/" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Repository.java", createJavaRepositoryFile(s, info), false);
+			createFile(absoluteResourcePath + repository + "/" + s + "/tb" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Entity.xml", createXMLEntityFile(s, info), true);
+			createFile(absoluteResourcePath + mapper + "/" + s + "/tb" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Mapper.xml", createXMLMapperFile(s, info), false);
+			createFile(absoluteResourcePath + repository + "/" + s + "/tb" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Repository.xml", createXMLRepositoryFile(s, info), false);
 		}
 	}
 	
-	public void createJavaEntityFile(String obj, List<HashMap<String, String>> info) {
+	public void createFile(String path, String contets, boolean duplicatedDelete) {
+		File file = new File(path);
+		
+		if(file.exists() && !duplicatedDelete) return;
+		
+		try {
+			file.getParentFile().mkdirs();
+			BufferedWriter out = new BufferedWriter(new FileWriter(path));
+			out.write(contets); 
+			out.newLine();
+			out.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String createJavaEntityFile(String obj, List<HashMap<String, String>> info) {
 		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/JavaEntity.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
@@ -67,10 +89,10 @@ public class DBCrawler {
 		StringWriter stringWriter = new StringWriter(); 
 		template.merge(velocityContext, stringWriter);
 
-		System.out.println(stringWriter.toString());
+		return stringWriter.toString();
 	}
 	
-	public void createJavaMapperFile(String obj, List<HashMap<String, String>> info) {
+	public String createJavaMapperFile(String obj, List<HashMap<String, String>> info) {
 		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/JavaMapper.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
@@ -79,10 +101,10 @@ public class DBCrawler {
 		StringWriter stringWriter = new StringWriter(); 
 		template.merge(velocityContext, stringWriter);
 
-		System.out.println(stringWriter.toString());
+		return stringWriter.toString();
 	}
 	
-	public void createJavaRepositoryFile(String obj, List<HashMap<String, String>> info) {
+	public String createJavaRepositoryFile(String obj, List<HashMap<String, String>> info) {
 		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/JavaRepository.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
@@ -91,10 +113,10 @@ public class DBCrawler {
 		StringWriter stringWriter = new StringWriter(); 
 		template.merge(velocityContext, stringWriter);
 
-		System.out.println(stringWriter.toString());
+		return stringWriter.toString();
 	}
 	
-	public void createXMLEntityFile(String obj, List<HashMap<String, String>> info) {
+	public String createXMLEntityFile(String obj, List<HashMap<String, String>> info) {
 		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/XMLEntity.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
@@ -104,7 +126,33 @@ public class DBCrawler {
 		StringWriter stringWriter = new StringWriter(); 
 		template.merge(velocityContext, stringWriter);
 
-		System.out.println(stringWriter.toString());
+		return stringWriter.toString();
+	}
+	
+	public String createXMLMapperFile(String obj, List<HashMap<String, String>> info) {
+		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/XMLMapper.vm"); 
+		VelocityContext velocityContext = new VelocityContext(); 
+		velocityContext.put("obj", obj); 
+		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
+		velocityContext.put("info", info); 
+		
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+
+		return stringWriter.toString();
+	}
+	
+	public String createXMLRepositoryFile(String obj, List<HashMap<String, String>> info) {
+		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/XMLRepository.vm"); 
+		VelocityContext velocityContext = new VelocityContext(); 
+		velocityContext.put("obj", obj); 
+		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
+		velocityContext.put("info", info); 
+		
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+
+		return stringWriter.toString();
 	}
 	
 	public boolean checkFileExist(String path) {

@@ -18,7 +18,11 @@
 	
 	<sql id="aliasColumn">
 #foreach($source in $info)
+#if($velocityCount == '1')
 		#[[${alias}]]# $source.col AS ${objCapital}Entity_$source.col
+#else 
+	    , #[[${alias}]]# $source.col AS ${objCapital}Entity_$source.col	
+#end
 #end		
 	</sql>
 	
