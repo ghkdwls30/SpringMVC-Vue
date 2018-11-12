@@ -23,9 +23,10 @@ public class DBCrawler {
 	Statement st = null;
 	ResultSet rs = null;
 	
+	String absoluteProjectgPath = System.getProperty("user.dir");
 	
-	String absoluteJavaPath = "D:/dev/workspace/SpringMVC-Vue/src/main/java";
-	String absoluteResourcePath = "D:/dev/workspace/SpringMVC-Vue/src/main/resource";
+	String absoluteJavaPath = absoluteProjectgPath + "/src/main/java";
+	String absoluteResourcePath = absoluteProjectgPath + "/src/main/resource";
 	String packagePath = "/com/sample/vue";
 	
 	String model = "/model";
@@ -43,22 +44,17 @@ public class DBCrawler {
 		velocityEngine  = new VelocityEngine();
 		
 		for(String s : list) {
-			boolean existJavaEntity = checkFileExist(absoluteJavaPath + packagePath + "/" + s + model + "/" + s + "Entity.java");
-			boolean existJavaMapper = checkFileExist(absoluteJavaPath + packagePath + "/" + s + repository + "/" + s + "Mapper.java");
-			boolean existJavaRepository = checkFileExist(absoluteJavaPath + packagePath + "/" + s + repository + "/" + s + "Repository.java");
 			
-			boolean existXMLEntity = checkFileExist(absoluteResourcePath + repository + "/" + s + "/tb" + s +  "Entity.xml");
-			boolean existXMLMapper = checkFileExist(absoluteResourcePath + mapper + "/" + s + "/tb" + s + "Mapper.xml");
-			boolean existXMLRepository = checkFileExist(absoluteResourcePath + repository + "/" + s + "/tb" + s  + "Repository.xml");
+			String capital = Character.toUpperCase(s.charAt(0)) + s.substring(1);
 			
 			List<HashMap<String, String>> info = getTableDetailInfo("tb_" + s);
 			
-			createFile(absoluteJavaPath + packagePath + "/" + s + model + "/" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Entity.java", createJavaEntityFile(s, info), true);
-			createFile(absoluteJavaPath + packagePath + "/" + s + repository + "/" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Mapper.java", createJavaMapperFile(s, info), false);
-			createFile(absoluteJavaPath + packagePath + "/" + s + repository + "/" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Repository.java", createJavaRepositoryFile(s, info), false);
-			createFile(absoluteResourcePath + repository + "/" + s + "/tb" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Entity.xml", createXMLEntityFile(s, info), true);
-			createFile(absoluteResourcePath + mapper + "/" + s + "/tb" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Mapper.xml", createXMLMapperFile(s, info), false);
-			createFile(absoluteResourcePath + repository + "/" + s + "/tb" +  Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Repository.xml", createXMLRepositoryFile(s, info), false);
+			createFile(absoluteJavaPath + packagePath + "/" + s + model + "/" +  capital + "Entity.java", createJavaEntityFile(s, info), true);
+			createFile(absoluteJavaPath + packagePath + "/" + s + repository + "/" +  capital + "Mapper.java", createJavaMapperFile(s, info), false);
+			createFile(absoluteJavaPath + packagePath + "/" + s + repository + "/" +  capital + "Repository.java", createJavaRepositoryFile(s, info), false);
+			createFile(absoluteResourcePath + repository + "/" + s + "/tb" +  capital + "Entity.xml", createXMLEntityFile(s, info), true);
+			createFile(absoluteResourcePath + mapper + "/" + s + "/tb" +  capital + "Mapper.xml", createXMLMapperFile(s, info), false);
+			createFile(absoluteResourcePath + repository + "/" + s + "/tb" +  capital + "Repository.xml", createXMLRepositoryFile(s, info), false);
 		}
 	}
 	
@@ -80,7 +76,7 @@ public class DBCrawler {
 	}
 	
 	public String createJavaEntityFile(String obj, List<HashMap<String, String>> info) {
-		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/JavaEntity.vm"); 
+		Template template = velocityEngine.getTemplate("/src/main/resource/templates/crawler/JavaEntity.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
 		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
@@ -93,7 +89,7 @@ public class DBCrawler {
 	}
 	
 	public String createJavaMapperFile(String obj, List<HashMap<String, String>> info) {
-		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/JavaMapper.vm"); 
+		Template template = velocityEngine.getTemplate("/src/main/resource/templates/crawler/JavaMapper.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
 		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
@@ -105,7 +101,7 @@ public class DBCrawler {
 	}
 	
 	public String createJavaRepositoryFile(String obj, List<HashMap<String, String>> info) {
-		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/JavaRepository.vm"); 
+		Template template = velocityEngine.getTemplate("/src/main/resource/templates/crawler/JavaRepository.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
 		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
@@ -117,7 +113,7 @@ public class DBCrawler {
 	}
 	
 	public String createXMLEntityFile(String obj, List<HashMap<String, String>> info) {
-		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/XMLEntity.vm"); 
+		Template template = velocityEngine.getTemplate("/src/main/resource/templates/crawler/XMLEntity.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
 		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
@@ -130,7 +126,7 @@ public class DBCrawler {
 	}
 	
 	public String createXMLMapperFile(String obj, List<HashMap<String, String>> info) {
-		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/XMLMapper.vm"); 
+		Template template = velocityEngine.getTemplate("/src/main/resource/templates/crawler/XMLMapper.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
 		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
@@ -143,7 +139,7 @@ public class DBCrawler {
 	}
 	
 	public String createXMLRepositoryFile(String obj, List<HashMap<String, String>> info) {
-		Template template = velocityEngine.getTemplate("/src/main/webapp/resources/templates/XMLRepository.vm"); 
+		Template template = velocityEngine.getTemplate("/src/main/resource/templates/crawler/XMLRepository.vm"); 
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("obj", obj); 
 		velocityContext.put("objCapital", Character.toUpperCase(obj.charAt(0)) + obj.substring(1)); 
